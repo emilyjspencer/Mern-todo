@@ -33,6 +33,16 @@ app.post('/words', (req, res) => {
   .catch(error => console.error(error))
 })
 
+app.delete('/words', (req, res) => {
+  todos.deleteOne(
+    { todo: req.body.todo }
+    )
+      .then(result => {
+        res.json('Your todo item was deleted')
+      })
+      .catch(error => console.error(error))
+})
+
 
 app.listen(5000, function() {
   console.log("Listening for requests on Port 5000")
