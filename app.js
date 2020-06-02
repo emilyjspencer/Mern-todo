@@ -13,8 +13,11 @@ MongoClient.connect(connection,
     const todos = db.collection('todos')
 
 
-app.use(bodyParser.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
+app.use(bodyParser.json())
+
 
 app.get('/', (req, res) => {
     db.collection('todos').find().toArray()
@@ -38,6 +41,7 @@ app.delete('/words', (req, res) => {
     { todo: req.body.todo }
     )
       .then(result => {
+          console.log(result)
         res.json('Your todo item was deleted')
       })
       .catch(error => console.error(error))
