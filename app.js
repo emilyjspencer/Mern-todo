@@ -9,7 +9,7 @@ MongoClient.connect(connection,
     { useUnifiedTopology: true })
   .then(client => {
     console.log('Successfully connected to the todolist database')
-    const db = client.db('todos')
+    const db = client.db('todolist')
     const todos = db.collection('todos')
 
 
@@ -17,8 +17,22 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-  res.render('index.ejs')
-});
+    db.collection('todos').find().toArray()
+      .then(results => {
+        res.render('index.ejs', { todos: results})
+      })
+      .catch()
+})
+
+app.post('/words', (req, res) => {
+  todos.insertOne(req.body) 
+   .then(result => {
+    console.log(result)
+    res.redirect('/')
+  })
+  .catch(error => console.error(error))
+})
+
 
 app.listen(5000, function() {
   console.log("Listening for requests on Port 5000")
